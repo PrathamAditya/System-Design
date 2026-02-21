@@ -1,4 +1,4 @@
-# MySQL Replication Lab (Master–Replica Architecture)
+# MySQL Master-Replica using Docker for MySQL
 
 ## Overview
 
@@ -10,8 +10,6 @@ Two MySQL 8.0 instances were configured:
 - mysql-replica → Port 3307
 
 Replication is configured using binary logs and asynchronous replication.
-
----
 
 ## Infrastructure Setup
 
@@ -30,8 +28,6 @@ Replication status verified with:
 
 Replica_IO_Running: Yes  
 Replica_SQL_Running: Yes  
-
----
 
 ## Replication Behavior
 
@@ -52,8 +48,6 @@ Master → Replica
 
 Replication is asynchronous.
 
----
-
 ## Important Architectural Rule
 
 Replication is strictly one-directional:
@@ -63,8 +57,6 @@ Master → Replica
 There is no reverse replication.
 
 Replica should be treated as read-only.
-
----
 
 ## Why Writing to Replica Is Dangerous
 
@@ -81,8 +73,6 @@ Replica Drift
 
 Replica drift causes distributed data inconsistency.
 
----
-
 ## Production Safety Configuration
 
 In production environments, replicas are configured with:
@@ -91,8 +81,6 @@ read_only = 1
 super_read_only = 1  
 
 This prevents accidental writes to replica nodes.
-
----
 
 ## Transaction Observations
 
@@ -105,7 +93,6 @@ During transaction experiments:
 
 Atomicity requires explicit handling at application level.
 
----
 
 ## Application-Level Read/Write Split (Python Demo)
 
@@ -120,7 +107,6 @@ This simulates:
 - Master-replica routing
 - Replication lag awareness
 
----
 
 ## Key Concepts Learned
 
@@ -131,12 +117,3 @@ This simulates:
 - Replica Drift
 - Infrastructure vs Application Responsibility
 - Distributed Data Consistency
-
----
-
-## Next Steps
-
-- Simulate replication lag
-- Implement basic sharding
-- Add routing logic at application level
-- Explore Proxy-based routing (e.g., ProxySQL)
