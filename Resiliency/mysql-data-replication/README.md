@@ -20,12 +20,12 @@ SET GLOBAL server_id = 101;
 
 Create replication user:
 
-CREATE USER 'replica'@'%' 
+CREATE USER 'replica'@'%'  -> '%' allowed to connect from any host.
 IDENTIFIED WITH mysql_native_password 
 BY 'replica_pass';
 
-GRANT REPLICATION SLAVE ON *.* TO 'replica'@'%';
-FLUSH PRIVILEGES;
+GRANT REPLICATION SLAVE ON *.* TO 'replica'@'%'; -> special privilege '.' apply to all DBs
+FLUSH PRIVILEGES; -> reload table, mysql may not apply changes instantly
 
 Get binary log coordinates:
 
