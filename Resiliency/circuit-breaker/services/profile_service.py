@@ -1,24 +1,32 @@
-from services.post_service import PostService
+# services/profile_service.py
+
+import requests
+
+POST_SERVICE_URL = "http://localhost:8001"
 
 class ProfileService:
-    
 
     def __init__(self, db):
         self.db = db
-        self.post_service = PostService(db)
 
     def get_profile_with_posts(self, profile_id: str):
-        profile_service_healthy = True ## Very shitty check!
-        if profile_service_healthy == True:
-            profile = self.db.profiles.find_one(
-                {"profile_id": profile_id},
-                {"_id": 0}
-            )
+        profile = self.db.profiles.find_one(
+            {"profile_id": profile_id},
+            {"_id": 0}
+        )
 
         if not profile:
             return None
-
-        posts = self.post_service.get_posts_by_profile(profile_id)
+        
+        response_check_health = requests.get(f"{POST_SERVICE_URL}/health").status_code
+        is_response_healthy = (response_check_health == 200)
+        print(response_check_health)
+        if(is_response_healthy):
+            response = requests.get(f"{POST_SERVICE_URL}/posts/{profile_id}")
+            posts = response.json()
+        else:
+            print("Post service is not healthy. Returning profile with empty posts list.")
+            posts = []
 
         profile["posts"] = posts
         return profile
