@@ -4,7 +4,7 @@ bits = [0] * 1016
 def get_index(key):
     return abs(hash(key)) % 1016
 
-# reading txt file and population the bits array
+# reading txt file and populating the bits array
 with open('insert.txt', 'r') as f:
     for line in f:
         key = line.strip()
